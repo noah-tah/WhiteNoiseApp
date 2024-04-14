@@ -44,4 +44,20 @@ public class WhiteNoiseApp {
             Thread.currentThread().interrupt();
         }
     }
+
+    // start of new code
+
+    public synchronized void setVolume(int volume) {
+        // Calculate the gain based on the volume slider value
+        float gain = (float) volume / 100.0f;
+
+        // Retrieve the control from the SourceDataLine and set the gain
+        if (line != null && line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+            FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+            // Calculate the value for the gain control based on the linear scale
+            float gainValue = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+            gainControl.setValue(gainValue);
+            
+        }
+    }
 }
