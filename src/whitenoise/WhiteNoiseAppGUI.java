@@ -1,8 +1,8 @@
 package whitenoise;
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
-import javax.swing.*;
 import java.awt.*;
 
 public class WhiteNoiseAppGUI {
@@ -11,12 +11,11 @@ public class WhiteNoiseAppGUI {
         // Create the main window (frame)
         JFrame frame =  new JFrame("White Noise Generator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // frame.setSize(420, 420); // Set the size of the window
-
         frame.setLayout(new BorderLayout()); // use BorderLayout to organize button and slider
 
 
         JButton button = new JButton("Start"); // button to start/stop white noise
+        button.setPreferredSize(new Dimension(20, 20)); // the change added
         WhiteNoiseApp noiseApp = new WhiteNoiseApp(); // Instantiate the White noise app
 
         button.addActionListener(e -> {
@@ -34,18 +33,7 @@ public class WhiteNoiseAppGUI {
         frame.setVisible(true);
         // frame.getContentPane().setBackground(Color.pink); // Eventually change the background color.
 
-        // Create a volume slider
-        JSlider volumeSlider = new JSlider(0, 100, 50);
-        volumeSlider.setOrientation(SwingConstants.HORIZONTAL);
-        volumeSlider.setMajorTickSpacing(10);
-        volumeSlider.setPaintTicks(true);
-        volumeSlider.setPaintLabels(true);
-
-        // Listen to hnadle volume changes
-        volumeSlider.addChangeListener(e -> {
-            int volume = volumeSlider.getValue();
-            noiseApp.setVolume(volume);
-        });
+        VolumeSlider volumeSlider = new VolumeSlider(noiseApp);
 
         // Add the volume slider to center of the frame
         frame.add(volumeSlider, BorderLayout.SOUTH);

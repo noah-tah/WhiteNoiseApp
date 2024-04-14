@@ -49,7 +49,7 @@ public class WhiteNoiseApp {
 
     public synchronized void setVolume(int volume) {
         // Calculate the gain based on the volume slider value
-        float gain = (float) volume / 100.0f;
+        float gain = volume / 100.0f;
 
         // Retrieve the control from the SourceDataLine and set the gain
         if (line != null && line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
