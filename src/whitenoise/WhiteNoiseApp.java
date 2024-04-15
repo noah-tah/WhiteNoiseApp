@@ -45,8 +45,6 @@ public class WhiteNoiseApp {
         }
     }
 
-    // start of new code
-
     public synchronized void setVolume(int volume) {
         // Calculate the gain based on the volume slider value
         float gain = volume / 100.0f;
