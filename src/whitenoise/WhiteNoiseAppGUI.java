@@ -1,10 +1,13 @@
 package whitenoise;
 
 import javax.swing.JPanel;
+import javax.accessibility.Accessible;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
@@ -14,105 +17,80 @@ public class WhiteNoiseAppGUI {
     
     private static void createAndShowGUI() {
         WhiteNoiseApp noiseApp = new WhiteNoiseApp(); // Instantiate the White noise app        
-        
-        
-        // JFrame & BorderLayout()
-        JFrame frame =  new JFrame("Focus Audio");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 700);  // default size of application
-        frame.setLayout(new BorderLayout(0,0)); // CAN ADD A GAP BETWEEN PANELS HERE LATER IF I WANT
-        //-----------------------------------------------------------------//
-        // Toolbar & Background Panels 
-        ToolBar toolbarPanel = new ToolBar(noiseApp); // instantiate toolbar
-        JPanel leftPanel = new JPanel();
-        JPanel rightPanel = new JPanel();
-        // JPanel topPanel = new JPanel();
-        JPanel centerPanel = new JPanel();
+        JFrame frame = createFrame();
+        JPanel leftPanel = createLeftPanel();
+        JPanel centerPanel = createCenterPanel();
+        ToolBar toolbarPanel = new ToolBar(noiseApp);
 
 
-        leftPanel.setPreferredSize(new Dimension(350,100));
-        
-
-        rightPanel.setPreferredSize(new Dimension(0,0));
-        // topPanel.setPreferredSize(new Dimension(0,100));
-        centerPanel.setPreferredSize(new Dimension(100,100));
-        
-        toolbarPanel.setBackground(Color.WHITE);
-        leftPanel.setBackground(Color.LIGHT_GRAY);
-        rightPanel.setBackground(Color.WHITE);
-        // topPanel.setBackground(Color.DARK_GRAY);
-        centerPanel.setBackground(Color.WHITE);
-
-
-        frame.add(toolbarPanel, BorderLayout.SOUTH); // ADD TOOLBAR BUT MAYBE ME WE DO A PANEL HERE INSTEAD POTENTIALLY
+        frame.add(toolbarPanel, BorderLayout.SOUTH);
         frame.add(leftPanel, BorderLayout.WEST);
-        frame.add(rightPanel, BorderLayout.EAST);
-        // frame.add(topPanel, BorderLayout.NORTH);
         frame.add(centerPanel, BorderLayout.CENTER);
-        
 
-        
-        
-        
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        
-        JPanel whiteNoisePanel = new JPanel();
-        whiteNoisePanel.setPreferredSize(new Dimension(200,200));
-        whiteNoisePanel.setBackground(Color.ORANGE);
-
-        JPanel brownNoisePanel = new JPanel();
-        brownNoisePanel.setPreferredSize(new Dimension(200,200));
-        brownNoisePanel.setBackground(Color.GREEN);
-
-        
-        JPanel natureSoundsPanel = new JPanel();
-        natureSoundsPanel.setPreferredSize(new Dimension(200, 200));
-        natureSoundsPanel.setBackground(Color.BLUE);
-
-
-        JPanel rssFeedPanel = new JPanel();
-        rssFeedPanel.setPreferredSize(new Dimension(200,200));
-        rssFeedPanel.setBackground(Color.MAGENTA);
-
-        leftPanel.add(whiteNoisePanel);
-        leftPanel.add(brownNoisePanel);
-        leftPanel.add(natureSoundsPanel);
-        leftPanel.add(rssFeedPanel);
-
-        Dimension buttonDimension = new Dimension(150,150);
-
-        whiteNoisePanel.setLayout(new BorderLayout());
-        JButton whiteNoiseButton = new JButton("White Noise");
-        whiteNoiseButton.setPreferredSize(buttonDimension);
-        whiteNoiseButton.setFocusable(false);
-        whiteNoisePanel.add(whiteNoiseButton, BorderLayout.EAST);
-
-        brownNoisePanel.setLayout(new BorderLayout());
-        JButton brownNoiseButton = new JButton("Brown Noise");
-        brownNoiseButton.setPreferredSize(buttonDimension);
-        brownNoiseButton.setFocusable(false);
-        brownNoisePanel.add(brownNoiseButton, BorderLayout.EAST);
-
-        natureSoundsPanel.setLayout(new BorderLayout());
-        JButton natureSoundsButton = new JButton("Nature Sounds");
-        natureSoundsButton.setPreferredSize(buttonDimension);
-        natureSoundsButton.setFocusable(false);
-        natureSoundsPanel.add(natureSoundsButton, BorderLayout.EAST);
-
-        rssFeedPanel.setLayout(new BorderLayout());
-        JButton rssFeedButton = new JButton("RSS Feed");
-        rssFeedButton.setPreferredSize(buttonDimension);
-        rssFeedButton.setFocusable(false);
-        rssFeedPanel.add(rssFeedButton, BorderLayout.EAST);
-
-        whiteNoisePanel.setVisible(true);
-        leftPanel.setVisible(true);
         frame.setVisible(true);
     }
+    
+    private static JFrame createFrame() {
+        JFrame frame =  new JFrame("Focus Audio");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1200, 700); 
+        frame.setLayout(new BorderLayout(0,0));
+
+        return frame;
+    }
+
+    private static JPanel createLeftPanel() {
+        JPanel leftPanel = new JPanel();
+        leftPanel.setPreferredSize(new Dimension(350,0));        
+        leftPanel.setBackground(Color.BLACK);
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        
+        leftPanel.add(Box.createVerticalStrut(10));
+        leftPanel.add(createButtonPanel("White Noise",Color.LIGHT_GRAY));
+        leftPanel.add(Box.createVerticalStrut(10));
+        leftPanel.add(createButtonPanel("Brown Noise",Color.LIGHT_GRAY));
+        leftPanel.add(Box.createVerticalStrut(10));
+        leftPanel.add(createButtonPanel("Nature Sounds",Color.LIGHT_GRAY));
+        leftPanel.add(Box.createVerticalStrut(10));
+        return leftPanel;
+        
+    }
+    
+    private static JPanel createCenterPanel() {
+        JPanel centerPanel = new JPanel();
+        JLabel welcomeTitle = new JLabel("Welcome to Focus Audio!"); //this is where
+        centerPanel.setPreferredSize(new Dimension(100,100));
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(welcomeTitle);
+
+        return centerPanel;
+
+    }
+    
+    private static JPanel createButtonPanel(String buttonText, Color backgroundColor) {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(350, 200));
+        JButton button = new JButton(buttonText);
+        button.setPreferredSize(new Dimension(340,200));
+        button.setFocusable(false);
+
+        //-------------------------//
+        // button.setBorderPainted(false);
+        // button.setContentAreaFilled(false);
+        button.setBackground(backgroundColor);
+        buttonPanel.setBackground(Color.BLACK);
+        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.add(button, BorderLayout.WEST);
+
+        return buttonPanel;
+
+    }
+
 
     // ------------------------------------------------------------//
     public static void main(String[] args) {
         // Esnrue the GUI Construction is done on the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
-}
+}   
