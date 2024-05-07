@@ -58,4 +58,35 @@ public class WhiteNoiseApp {
             
         }
     }
+
+    public static class BrownNoiseGenerator {
+        public static byte[] generateBrownNoise(int duration, int sampleRate) {
+            int numSamples = duration * sampleRate;
+            byte[] brownNoise = new byte[numSamples];
+
+            double lastValue = 0;
+            for (int i = 0; i < numSamples; i++) {
+                double whiteNoise = Math.random() * 2 - 1;
+                lastValue += whiteNoise;
+                brownNoise[i] = (byte) (lastValue / Math.sqrt(sampleRate));
+            }
+
+            return brownNoise;
+        }
+
+        public static void playAudio(byte[] audioData, int sampleRate) {
+            try {
+                AudioFormat format = new AudioFormat(sampleRate, 16, 1, true, true);
+                DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+                line.open(format);
+                line.start();
+                line.write(audioData, 0, audioData.length);
+                line.drain();
+                line.close();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

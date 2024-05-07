@@ -13,10 +13,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import java.awt.event.ActionEvent;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class WhiteNoiseAppGUI {
+
+    private static JButton[] buttons; // Declare an array to store the buttons!!!
     
     private static void createAndShowGUI() {
         WhiteNoiseApp noiseApp = new WhiteNoiseApp(); // Instantiate the White noise app        
@@ -42,22 +46,39 @@ public class WhiteNoiseAppGUI {
         return frame;
     }
 
+    // TODO: Fix these fucking buttons
+    // 
+    //
     private static JPanel createLeftPanel() {
         JPanel leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(350,0));        
         leftPanel.setBackground(Color.BLACK);
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+
+        buttons = new JButton[3]; // Initialize the array to hold the 3 buttons
         
         leftPanel.add(Box.createVerticalStrut(5));
-        leftPanel.add(createButtonPanel("White Noise",Color.LIGHT_GRAY));
+
+        buttons[0] = (createButton("White Noise",Color.LIGHT_GRAY));  // Store to array
+        leftPanel.add(createButtonPanel(buttons[0]));
+
         leftPanel.add(Box.createVerticalStrut(5));
-        leftPanel.add(createButtonPanel("Brown Noise",Color.LIGHT_GRAY));
+
+        buttons[1] = (createButton("Brown Noise",Color.LIGHT_GRAY));  // Store to array
+        leftPanel.add(createButtonPanel(buttons[1]));
+
         leftPanel.add(Box.createVerticalStrut(5));
-        leftPanel.add(createButtonPanel("Nature Sounds",Color.LIGHT_GRAY));
+
+        buttons[2] = (createButton("Nature Sounds",Color.LIGHT_GRAY)); // Store to array
+        leftPanel.add(createButtonPanel(buttons[2]));
+
         leftPanel.add(Box.createVerticalStrut(5));
+
         return leftPanel;
         
     }
+
+    /// RIGHT UP THERE ^^^^^^^^^
     
     private static JPanel createCenterPanel() {
         JPanel centerPanel = new JPanel();
@@ -94,29 +115,51 @@ public class WhiteNoiseAppGUI {
         return centerPanel;
 
     }
-    
-    private static JPanel createButtonPanel(String buttonText, Color backgroundColor) {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(350, 200));
-        JButton button = new JButton(buttonText);
-        button.setPreferredSize(new Dimension(345,200));
-        button.setFocusable(false);
 
-        button.setBorderPainted(false);
-        // button.setContentAreaFilled(false);
-        button.setBackground(backgroundColor);
+    private static JPanel createButtonPanel(JButton button) {
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.BLACK);
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.add(button, BorderLayout.WEST);
+        buttonPanel.setPreferredSize(new Dimension(350, 200));
 
         return buttonPanel;
 
     }
 
 
-    // ------------------------------------------------------------//
+    private static JButton createButton(String buttonText, Color backgroundColor) {
+        JButton button = new JButton(buttonText);
+        button.setPreferredSize(new Dimension(345,200));
+        button.setFocusable(false);
+        button.setBorderPainted(false);
+        button.setBackground(Color.LIGHT_GRAY);
+
+
+
+        // I DONT KNOW HOW BUT YOUR  BUTTON ACTUALLY WORKS JIMMY NEUTRON
+        // <(O.O)>
+        //
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (buttonText.equals("Brown Noise")) {
+                    // byte[] brownNoise = WhiteNoiseApp.BrownNoiseGenerator.generateBrownNoise(10, 44100);
+                    System.out.println("brown noise button pressed");
+                } else if (buttonText.equals("White Noise")) {
+                    System.out.println("White Noise Button Pressed");
+                }  if (buttonText.equals("Nature Sounds")) {
+                    System.out.println("Nature Sounds Button Pressed");
+                }
+            }
+        });
+        return button;
+    }
+
+
+    // ---------------------------------------------------     ---------//
     public static void main(String[] args) {
-        // Esnrue the GUI Construction is done on the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
-}   
+}
